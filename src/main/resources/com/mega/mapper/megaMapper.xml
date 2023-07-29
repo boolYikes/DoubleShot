@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mega.mapper.megaMapper">
+	
+	<select id="getCate" resultType="com.mega.entity.t_category">
+		select * from t_category
+	</select>
+	
+	<select id="getMenu" resultType="com.mega.entity.t_menu" parameterType="com.mega.entity.t_menu">
+		select * from t_menu where category_seq = #{category_seq}
+	</select>
+	
+	<select id="getMenus" resultType="com.mega.entity.t_menu" parameterType="com.mega.entity.t_menu">
+		select * from t_menu where category_seq = #{category_seq}
+	</select>
+	
+	<select id="getAllMenus" resultType="com.mega.entity.t_menu">
+		SELECT * FROM t_menu
+	</select>
+	
+	<select id="getOp" resultType="com.mega.entity.t_option" parameterType="com.mega.entity.t_option">
+		select * from t_option where menu_seq = #{menu_seq}
+	</select>
+	
+	<select id="getVoiceOptions" resultType="com.mega.entity.t_option" parameterType="com.mega.entity.t_option">
+		select DISTINCT * from t_option where menu_name = #{menu_name}
+	</select>
+	
+	<insert id="getReady" parameterType="com.mega.entity.t_order">
+	    INSERT INTO t_order (order_age) VALUES (#{order_age})
+	</insert>
+	
+	<select id="getOdseq" resultType="java.lang.Integer">
+		SELECT order_seq FROM t_order WHERE order_status IS NULL;
+	</select>
+	
+	<insert id="getOrder" parameterType="com.mega.entity.t_order_detail">
+	INSERT INTO t_order_detail (menu_cnt, menu_name, menu_price, od_size, od_ice, od_shot, od_cup,order_seq) 
+	VALUES (#{menu_cnt}, #{menu_name},#{menu_price}, #{od_size}, #{od_ice}, #{od_shot}, #{od_cup},
+	(SELECT order_seq FROM t_order WHERE order_status IS NULL))
+	</insert>	
+	
+	<select id="getSelect" resultType="com.mega.entity.t_order_detail" parameterType="com.mega.entity.t_order_detail">
+		select * from t_order_detail where order_seq = #{order_seq}
+	</select>
+	
+	<delete id="deleteOrder" parameterType="com.mega.entity.t_order_detail">
+		delete from t_order_detail where od_seq = #{od_seq}
+	</delete>
+	
+	<update id="updateData" parameterType="com.mega.entity.t_order_detail">
+	    update t_order_detail set menu_cnt = #{menu_cnt} WHERE menu_name = #{menu_name} and order_seq = #{order_seq}
+	</update>
+	
+	<update id="saveOrder" parameterType="com.mega.entity.t_order">
+	  UPDATE t_order
+	  SET order_at = #{order_at},
+	  	  order_total_amount = #{order_total_amount},
+	      pay_method = #{pay_method},
+	      order_status = 'success'
+	  WHERE order_seq = #{order_seq}
+	</update>
+
+	<update id="orderCancle" parameterType="com.mega.entity.t_order">
+		update t_order set order_status = 'cancel' where order_seq = #{order_seq}
+	</update>
+	
+	<insert id="getRecomm" parameterType="com.mega.entity.t_order">
+		INSERT INTO t_menu (menu_name, menu_price, menu_desc, menu_img, category_seq)
+		SELECT DISTINCT menu_name, menu_price, menu_desc, menu_img, 1
+		FROM (
+		    SELECT od.menu_name, m.menu_price, m.menu_desc, m.menu_img, COUNT(od.menu_name) as menu_count
+		    FROM t_order_detail od
+		    JOIN t_order o ON od.order_seq = o.order_seq
+		    JOIN t_menu m ON od.menu_name = m.menu_name
+		    WHERE o.order_age = #{order_age}
+		    GROUP BY od.menu_name, m.menu_price, m.menu_desc, m.menu_img
+		    ORDER BY menu_count DESC
+		    LIMIT 6
+		) AS recommended_menus;
+	</insert>
+	
+	<insert id="updateOption">
+		INSERT INTO t_option (menu_seq, op_size_s, op_size_m, op_size_l, op_ice, op_ice_s, op_ice_l, op_shot, op_shot_s, op_shot_l, op_cup, op_cup_t, menu_name)
+		SELECT DISTINCT
+		  new_menu.menu_seq,
+		  old_opt.op_size_s,
+		  old_opt.op_size_m,
+		  old_opt.op_size_l,
+		  old_opt.op_ice,
+		  old_opt.op_ice_s,
+		  old_opt.op_ice_l,
+		  old_opt.op_shot,
+		  old_opt.op_shot_s,
+		  old_opt.op_shot_l,
+		  old_opt.op_cup,
+		  old_opt.op_cup_t,
+		  new_menu.menu_name
+		FROM
+		  t_menu new_menu
+		JOIN t_menu old_menu ON new_menu.menu_name = old_menu.menu_name
+		JOIN t_option old_opt ON old_menu.menu_seq = old_opt.menu_seq 
+		WHERE
+		  new_menu.category_seq = 1
+		LIMIT 6;
+	</insert>
+	
+	<delete id="delRecomm">
+		delete from t_menu where category_seq = 1;
+	</delete>
+	
+	<delete id="delOption">
+		DELETE FROM t_option WHERE menu_seq IN (SELECT menu_seq FROM t_menu WHERE category_seq = 1);
+	</delete>
+	
+	<select id="getVoiceOrder" parameterType="com.mega.entity.t_menu" resultType="com.mega.entity.t_menu">
+		select * from t_menu where menu_name = #{menu_name}
+	</select>
+	
+</mapper>

@@ -1,0 +1,46 @@
+.carousel-inner img {
+	margin: 0;
+	width: 100%;
+	height: 1200px;
+}
+	
+.carousel-inner h3 {
+	font-size: 300%;
+	font-weight: bolder;
+	 margin-top: 1em;
+	margin-bottom: 1em;
+	text-shadow: 3px 3px 3px gainsboro;
+}
+
+.eat{
+  width:550px;
+  height: 460px;
+  border:1px solid black;
+  border-radius: 10px;
+  margin-left: 18%;
+  cursor: pointer;
+}
+
+.togo{
+  width: 550px;
+  height: 460px;
+  border:1px solid black;
+  border-radius: 10px;
+  margin-left: 150px;
+  cursor: pointer;
+}   
+
+button.eat > p{
+  margin: 10px;
+  font-size: 5em;
+}
+
+button.togo > p{
+  margin: 10px;
+  font-size: 5em;
+}
+
+.logo{
+  margin-top: 5%;
+  margin-bottom: 12%;
+}
