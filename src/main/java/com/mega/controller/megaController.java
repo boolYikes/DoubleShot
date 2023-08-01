@@ -30,17 +30,17 @@ public class megaController {
 
 	
 	@RequestMapping("/next")
-	public String next(Model model /*, @RequestParam("order_age") int order_age*/ ) {
+	public String next(Model model , @RequestParam("order_age") int order_age) {
 		
-		/*
-		 * System.out.println("사용자 예측 나이 : " + order_age);
-		 * 
-		 * mapper.getReady(order_age);
-		 * 
-		 * mapper.getRecomm(order_age); mapper.updateOption();
-		 * 
-		 * model.addAttribute("order_age", order_age);
-		 */
+		
+		  System.out.println("사용자 예측 나이 : " + order_age);
+		  
+		  mapper.getReady(order_age);
+		  
+		  mapper.getRecomm(order_age); mapper.updateOption();
+		  
+		  model.addAttribute("order_age", order_age);
+		 
 		
 		return "register";
 	}

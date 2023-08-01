@@ -10,7 +10,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="resources/img/apple-icon.png">
     <link rel="icon" type="image/png" href="resources/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>MEGA</title>
+    <title>DoubleShot</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!--     Fonts and icons     -->
     <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet"> -->
@@ -480,8 +480,8 @@
                 </div>
 
                 <div class="row orders-title">
-                    <span id="orders-title" style="margin-right: 160px;">선택한 상품</span>
-                    <img class="logo_img" src="resources/img/logo.png" alt="logo" style="float: right;">
+                    <span id="orders-title" style="margin-right: 130px;">선택한 상품</span>
+                    <img class="logo_img" src="resources/img/main_logo.png" alt="logo" style="float: right;">
                 </div>
                 <hr>
 
@@ -510,7 +510,7 @@
             <div class="background">
                 <div class="window">
                     <div class="popup">
-                        <img src="resources/img/logo.png" style="width: 150px; height: 30px; margin-left: 30px; margin-top: 20px;">
+                        <img src="resources/img/main_logo.png" style="width: 150px; height: 45px; margin-left: 30px; margin-top: 20px;">
                         <div class="container">
                             <form id="orderList" onsubmit="return false">
                                 <div class="left">
